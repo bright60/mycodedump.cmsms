@@ -4,10 +4,9 @@
 # Released under the GPL v3 (http://www.gnu.org/licenses/gpl.html)
 # Version: 0.1
 #
-# For more information see the help sections at the end of this file
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Based on and inspired by the ImageGallery Plugin by Russ Baldwin 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# For more information see the help sections at the end of this file.
+# Based on and inspired by the ImageGallery Plugin by Russ Baldwin. 
+
 
 
 function smarty_cms_function_Boxifier($params, &$smarty) {
