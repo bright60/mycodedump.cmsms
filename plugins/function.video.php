@@ -1,12 +1,17 @@
 <?php
+#
 # Plugin to include videos uploaded to the most popular video sharing portals.
-# Reto Hugi http://hugi.to
-# Released under the GPL v3 (http://www.gnu.org/licenses/gpl.html)
+#
 # Version: 0.1
+# Author: Reto Hugi  (http://hugi.to/blog/)
+# License: GPL v3 (http://www.gnu.org/licenses/gpl.html)
 #
 # For more information see the help sections at the end of this file.
 # Parts of the Plugin (namely the url parsers for some of the portals) are ported
 # from a js function for TinyMCE available in LifeType (http://www.lifetype.org).
+#
+# Changelog:
+# 2010-01-08 / Version 0.1 / initial release
 
 
 function smarty_cms_function_Video($params, &$smarty) {

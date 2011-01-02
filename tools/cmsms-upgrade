@@ -1,11 +1,17 @@
 #!/bin/bash
+#
 # Shell script to update cmsms installations via svn
-# --------------------------------------------------------------------
-# This is a free shell script under GNU GPL version 2.0 or above
-# Copyright (C) 2004, 2005 nixCraft project
-# -------------------------------------------------------------------------
-# Visit http://hugi.to/ for more information.
-# -------------------------------------------------------------------------
+#
+# Version: 0.1
+# Author: Reto Hugi (http://hugi.to/blog/)
+# License: GPL v3 (http://www.gnu.org/licenses/gpl.html)
+#
+# Dependencies:
+# This script requires:
+# - a working svn installation :)
+#
+# Changelog:
+# 2010-01-08 / Version 0.1 / initial release
 
 E_BADARGS=65
 

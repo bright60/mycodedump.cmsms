@@ -1,12 +1,17 @@
 <?php
+#
 # Shadowbox Plugin for Uploaded Images
-# Reto Hugi http://hugi.to
-# Released under the GPL v3 (http://www.gnu.org/licenses/gpl.html)
-# Version: 0.1
+#
+# Version: 0.2
+# Author: Reto Hugi  (http://hugi.to/blog/)
+# License: GPL v3 (http://www.gnu.org/licenses/gpl.html)
 #
 # For more information see the help sections at the end of this file.
-# Based on and inspired by the ImageGallery Plugin by Russ Baldwin. 
-
+# Based on and inspired by the ImageGallery Plugin by Russ Baldwin.
+#
+# Changelog:
+# 2009-10-12 / Version 0.1 / initial release
+# 2010-01-08 / Version 0.2 / code cleanup
 
 
 function smarty_cms_function_Boxifier($params, &$smarty) {
@@ -28,16 +33,6 @@ function smarty_cms_function_Boxifier($params, &$smarty) {
     if(isset($params['sortBy'])) $sortBy = $params['sortBy'];
     if(isset($params['sortByOrder'])) $sortByOrder = $params['sortByOrder'];
     if(isset($params['gTitle'])) $galleryTitle = $params['gTitle'];
-
-    /*
-    if(isset($params['bigPicCaption'])) $bigPicCaption = $params['bigPicCaption'];
-    if(isset($params['thumbPicCaption'])) $thumbPicCaption = $params['thumbPicCaption'];
-    if(isset($params['bigPicAltTag'])) $bigPicAltTag = $params['bigPicAltTag'];
-    if(isset($params['bigPicTitleTag'])) $bigPicTitleTag = $params['bigPicTitleTag'];
-    if(isset($params['thumbPicAltTag'])) $thumbPicAltTag = $params['thumbPicAltTag'];
-    if(isset($params['thumbPicTitleTag'])) $thumbPicTitleTag = $params['thumbPicTitleTag'];
-    */
-
 
     //Read Image Folder
     $selfA = explode('/', $_SERVER["PHP_SELF"]);
@@ -103,63 +98,6 @@ function smarty_cms_function_Boxifier($params, &$smarty) {
         //Set Image
         $output .= '<img src="' . $thumbPic .'" alt="' . $bigPicName . '" />';
 
-        /*
-        //title tags
-        switch($thumbPicTitleTag) {
-            case "name":        
-                $output .=' title="'.$bigPicName.'... click for a bigger image"';
-                break;   
-            case "number":
-                $output .=' title="'.($key+1).'... click for a bigger image"';
-                break;
-            case "file":
-                $output .=' title="'.$ImageFileName.'... click for a bigger image"';
-                break;  
-            case "none":
-                break;  
-            default:
-                $output .=' title="Click for a bigger image..."';
-                break;   
-        }
-
-        //alt tags - compulsory
-        switch($thumbPicAltTag) {
-            case "name":        
-                $output .=' alt="'.$bigPicName.'"';
-                break;   
-            case "number":
-                $output .=' alt="'.($key+1).'"';
-                break;
-            case "file":
-                $output .=' alt="'.$ImageFileName.'"';
-                break;   
-            default:
-                $output .=' alt="'.$bigPicName.'"';
-                break;   
-        }
-        */
-        
-        
-        /*
-        // Set thumb captions
-        switch($thumbPicCaption) {
-            case "name":        
-                $output .= '<p class="thumbPicCaption">'.$bigPicName.'</p>'."\n";
-                break;   
-            case "number":
-                $output .= '<p class="thumbPicCaption">'.($key+1).'</p>'."\n";
-                break;
-            case "file":
-                $output .= '<p class="thumbPicCaption">'.$ImageFileName.'</p>'."\n";
-                break; 
-            case "none":
-                break;
-            default:
-                $output .= '<p class="thumbPicCaption">'.$bigPicName.'</p>'."\n";
-                break;   
-        }
-        */
-
         //Close tags
         $output .='</a></li>' . "\n";
         
@@ -191,10 +129,6 @@ function smarty_cms_help_function_Boxifier() {
 EOF;
 }
 
-  if(isset($params['ulID'])) $divID = $params['ulID'];
-    if(isset($params['picFolder'])) $picFolder = $params['picFolder'];
-    if(isset($params['sortBy'])) $sortBy = $params['sortBy'];
-    if(isset($params['sortByOrder'])) $sortByOrder = $params['sortByOrder'];
 
 function smarty_cms_about_function_Boxifier() {
     echo <<<EOF
