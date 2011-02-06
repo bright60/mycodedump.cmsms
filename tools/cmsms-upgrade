@@ -36,7 +36,7 @@ fi
 
 BasePath="/home/reto/devel/www/"
 htdocs="/test/"
-cmsmsSvnHome="http://svn.cmsmadesimple.org/svn/cmsmadesimple/tags/version-"
+cmsmsSvnHome="http://svn.cmsmadesimple.org/svn/cmsmadesimple/tags/"
 Tag=$2
 CustDir=$1
 WorkDir="$BasePath$CustDir$htdocs"
