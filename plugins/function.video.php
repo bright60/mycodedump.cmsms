@@ -12,6 +12,7 @@
 #
 # Changelog:
 # 2010-01-08 / Version 0.1 / initial release
+# 2011-05-15 / Version 0.2 / removed related videos display for youtube
 
 
 function smarty_cms_function_Video($params, &$smarty) {
@@ -110,6 +111,8 @@ class Video {
 	    $out = '';
 	    $params = array("object","param");
 	    $url = '';
+	    $norel = 'rel=0'; //removes the "related video" display at the end of a video
+	    $version = 'version=3';
 	    
 	    // check if this is a URL pointing to a youtube link
 	    if ( preg_match("/http:\/\/.{2,3}\.youtube\.com\//i", $this->videoUrl) ) {
@@ -118,7 +121,7 @@ class Video {
 			    $videoId = $matches[1];
 		    }
 		    
-		    $url = "http://www.youtube.com/v/" . $videoId;
+		    $url = "http://www.youtube.com/v/" . $videoId ."?". $version . "&amp;" . $norel;
 
 		    $params = array("object" => array("width" => $this->width,
 		                                      "height"=> $this->height,
