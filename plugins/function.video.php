@@ -2,7 +2,7 @@
 #
 # Plugin to include videos uploaded to the most popular video sharing portals.
 #
-# Version: 0.1
+# Version: 1.0
 # Author: Reto Hugi  (http://hugi.to/blog/)
 # License: GPL v3 (http://www.gnu.org/licenses/gpl.html)
 #
@@ -11,9 +11,7 @@
 # from a js function for TinyMCE available in LifeType (http://www.lifetype.org).
 #
 # Changelog:
-# 2010-01-08 / Version 0.1 / initial release
-# 2011-05-15 / Version 0.2 / removed related videos display for youtube
-
+# see below
 
 function smarty_cms_function_Video($params, &$smarty) {
 
@@ -42,8 +40,12 @@ class Video {
         $this->width = 480;
         $this->height = 385;
         
-        $this->availableServices = array('youtube.com', 'video.google.com', '5min.com',
-                                        'dailymotion.com','vimeo.com');
+        $this->availableServices = array('youtube.com',
+                                         'youtu.be', 
+                                         'video.google.com', 
+                                         '5min.com',
+                                         'dailymotion.com',
+                                         'vimeo.com');
     }
 
     function getHtml() {
@@ -60,6 +62,7 @@ class Video {
         switch ($service) {
     
             case 'youtube.com':
+            case 'youtu.be':
                 $output = $this->getYoutube();
                 break;
                 
@@ -109,24 +112,42 @@ class Video {
 
     function getYoutube() {
 	    $out = '';
-	    $params = array("object","param");
+	    $params = array("iframe","attributes");
 	    $url = '';
 	    $norel = 'rel=0'; //removes the "related video" display at the end of a video
-	    $version = 'version=3';
+	    $nocookies = true; // if set to true, the extended privacy settings
+	                       // (no cookies if video is not played) will take effect.
+	    
+	    if ($nocookies === true) {
+	        $domain = 'www.youtube-nocookie.com';
+	    }
+	    else {
+  	        $domain = 'www.youtube.com';
+	    }
 	    
 	    // check if this is a URL pointing to a youtube link
-	    if ( preg_match("/http:\/\/.{2,3}\.youtube\.com\//i", $this->videoUrl) ) {
+	    if ( preg_match("/http:\/\/.{2,3}\.youtube\.com\//i", $this->videoUrl)
+	         || preg_match("/http:\/\/youtu\.be\//i", $this->videoUrl) ) {
 		    
-		    if( preg_match("/http:\/\/.{2,3}\.youtube.com\/.*?v=([\-0-9a-zA-z_]*).*/i",$this->videoUrl,$matches) ) {			
+		    
+		    // try parsing long url
+		    if( preg_match("/http:\/\/.{2,3}\.youtube\.com\/watch\?v=([0-9a-zA-z]*).*/i",$this->videoUrl,$matches) ) {			
 			    $videoId = $matches[1];
 		    }
-		    
-		    $url = "http://www.youtube.com/v/" . $videoId ."?". $version . "&amp;" . $norel;
+            
+            // try parsing short url
+		    if( preg_match("/http:\/\/youtu\.be\/([0-9a-zA-z]*).*/i",$this->videoUrl,$matches) ) {			
+			    $videoId = $matches[1];
+		    }
+            
+            
+		    $url = 'http://'.$domain.'/embed/' . $videoId ."?". $norel;
 
-		    $params = array("object" => array("width" => $this->width,
+		    $params = array("iframe" => array("width" => $this->width,
 		                                      "height"=> $this->height,
-		                                      "data" => $url),
-		                    "param" => array("movie" => $url)
+		                                      "url" => $url),
+		                    "attributes" => array("frameborder" => 'frameborder="0"',
+		                                          "fullscreen" => 'allowfullscreen')
 		                   );
 		    
             $out = $this->getVideoHtml($params);
@@ -226,7 +247,7 @@ class Video {
 
     function getVimeo() {
 	    $out = '';
-	    $params = array("object","param");
+	    $params = array("iframe","attributes");
 	    $url = '';
 
 	    if( preg_match("/http:\/\/(www\.)?vimeo\.com\//i", $this->videoUrl) ) {
@@ -235,12 +256,19 @@ class Video {
 			    $videoId = $matches[1];
 		    }
 
-		    $url = "http://vimeo.com/moogaloop.swf?clip_id=" . $videoId . "&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=&amp;fullscreen=1";
+            $url = 'http://player.vimeo.com/video/'
+                    . $videoId 
+                    . '?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff';
 
-		    $params = array("object" => array("width" => $this->width,
+
+
+
+		    $params = array("iframe" => array("width" => $this->width,
 		                                      "height"=> $this->height,
-		                                      "data" => $url),
-		                    "param" => array("movie" => $url)
+		                                      "url" => $url),
+		                    "attributes" => array("frameborder" => 'frameborder="0"',
+		                                          "webkitfullscreen" => 'webkitAllowFullScreen',
+		                                          "fullscreen" => 'allowFullScreen')
 		                   );
 		    
             $out = $this->getVideoHtml($params);
@@ -254,20 +282,37 @@ class Video {
 
 
     function getVideoHtml(&$params) {
-	    $html = '<object type="application/x-shockwave-flash" ';
 	    
-	    // add height and width
-	    $html .= 'style="width: '.$params['object']['width'].'px; height: '.$params['object']['height'].'px;" ';
+	    $html = null;
 	    
-	    // add Data
-	    $html .= 'data="'.$params['object']['data'].'" ';
-	    $html .= '>';
-	    
-	    // add Params
-	    foreach($params['param'] as $name => $value) {
-	        $html .= '<param name="'.$name.'" value="'.$value.'" />';
+	    if ($params['object'] != null) {    
+	        $html = '<object type="application/x-shockwave-flash" ';
+	        
+	        // add height and width
+	        $html .= 'style="width: '.$params['object']['width'].'px; height: '.$params['object']['height'].'px;" ';
+	        
+	        // add Data
+	        $html .= 'data="'.$params['object']['data'].'" ';
+	        $html .= '>';
+	        
+	        // add Params
+	        foreach($params['param'] as $name => $value) {
+	            $html .= '<param name="'.$name.'" value="'.$value.'" />';
+	        }
+	        $html .= '</object>';
 	    }
-	    $html .= '</object>';
+	    elseif ($params['iframe'] != null) {
+	        $html = '<iframe src="'.$params['iframe']['url'].'" ';
+
+	        // add height and width
+	        $html .= 'width="'.$params['iframe']['width'].'" '
+	                .'height="'.$params['iframe']['height'].'" ';
+	        // add Params
+	        foreach($params['attributes'] as $name => $value) {
+	            $html .= $value.' ';
+	        }
+	        $html .= '></iframe>';
+	    }
 	    	
 	    return $html;
     }
@@ -317,7 +362,7 @@ function smarty_cms_help_function_Video() {
         Suported services: youtube.com, video.google.com, 5min.com,
         dailymotion.com, vimeo.com.<br/>
         Usage:<br/>
-        <code>{video url="video-url"}</code>
+        <code>{video url="<Url-of-Detail-Page"}</code>
     </p>
     <h2>Options</h2>
     <ul>
@@ -330,10 +375,14 @@ EOF;
 function smarty_cms_about_function_Video() {
     echo <<<EOF
     <p>Author: <a href="http://hugi.to">Reto Hugi</a></p>
-    <p>Version: <strong>0.1</strong></p>
+    <p>Version: <strong>1.0</strong></p>
     <p>
     Change History:<br/>
+    <strong>Version 1.0</strong> - added youtu.be (Youtube short url) support<br/>
+    <strong>Version 0.3</strong> - Fixed fullscreen Feature for Vimeo and Youtube<br/>
+    <strong>Version 0.2</strong> - removed related videos display for youtube<br/>
     <strong>Version 0.1</strong> - First release as a Plugin (Tag)<br/>
+
     </p>
     <p>
     Tested with CMSMS Version:<br/>
