@@ -384,10 +384,6 @@ function smarty_cms_about_function_Video() {
     <strong>Version 0.1</strong> - First release as a Plugin (Tag)<br/>
 
     </p>
-    <p>
-    Tested with CMSMS Version:<br/>
-    1.6.6
-    </p>
 EOF;
 }
 
