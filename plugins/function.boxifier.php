@@ -2,7 +2,7 @@
 #
 # Shadowbox Plugin for Uploaded Images
 #
-# Version: 0.2
+# Version: 0.3
 # Author: Reto Hugi  (http://hugi.to/blog/)
 # License: GPL v3 (http://www.gnu.org/licenses/gpl.html)
 #
@@ -10,8 +10,7 @@
 # Based on and inspired by the ImageGallery Plugin by Russ Baldwin.
 #
 # Changelog:
-# 2009-10-12 / Version 0.1 / initial release
-# 2010-01-08 / Version 0.2 / code cleanup
+# see below
 
 
 function smarty_cms_function_Boxifier($params, &$smarty) {
@@ -28,7 +27,7 @@ function smarty_cms_function_Boxifier($params, &$smarty) {
     $thumbPicAltTag = 'name'; // either 'name', 'file', 'number'. Sets alt tag - compulsory
     $thumbPicTitleTag = ''; // either the default or 'name', 'file', 'number' or 'none'. Sets title tag or removes it
 
-    if(isset($params['ulID'])) $divID = $params['ulID'];
+    if(isset($params['ulID'])) $ulID = $params['ulID'];
     if(isset($params['picFolder'])) $picFolder = $params['picFolder'];
     if(isset($params['sortBy'])) $sortBy = $params['sortBy'];
     if(isset($params['sortByOrder'])) $sortByOrder = $params['sortByOrder'];
@@ -93,7 +92,7 @@ function smarty_cms_function_Boxifier($params, &$smarty) {
         $bigPicName = basename($bigPic, $extension);
 
         $output .= '<li class="thumb">';
-        $output .= '<a href="' . $bigPic . '" rel="shadowbox[' . $galleryTitle . ']" title="' . $bigPicName . '">' . "\n";
+        $output .= '<a href="' . $bigPic . '" rel="lightbox-'.$galleryTitle.'" title="' . $bigPicName . '">' . "\n";
 
         //Set Image
         $output .= '<img src="' . $thumbPic .'" alt="' . $bigPicName . '" />';
@@ -133,15 +132,14 @@ EOF;
 function smarty_cms_about_function_Boxifier() {
     echo <<<EOF
     <p>Author: <a href="http://hugi.to">Reto Hugi</a></p>
-    <p>Version: <strong>0.1</strong></p>
+    <p>Version: <strong>0.3</strong></p>
     <p>
     Change History:<br/>
+    <strong>Version 0.3</strong> - switched from shadowbox to slimbox2<br/>
+    <strong>Version 0.2</strong> - code cleanup<br/>
     <strong>Version 0.1</strong> - First release as a Plugin (Tag)<br/>
     </p>
-    <p>
-    Tested with CMSMS Version:<br/>
-    1.6.5, 1.6.6
-    </p>
+
 EOF;
 }
 
