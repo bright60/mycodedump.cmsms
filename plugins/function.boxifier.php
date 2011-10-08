@@ -17,8 +17,8 @@ function smarty_cms_function_Boxifier($params, &$smarty) {
 
     $galleryTitle = "Gallery";
     $picFolder = 'uploads/images/';  //path to pics, ending with /
-    $ulID = 'picturelist'; // Set the wrapping div id to allow you to have different CSS for each gallery.
-    $sortBy = 'name'; //Sort image files by 'name' o 'date'
+    $ulClass = 'picturelist'; // Set the wrapping div id to allow you to have different CSS for each gallery.
+    $sortBy = 'name'; //Sort image files by 'name' or 'date'
     $sortByOrder = 'asc'; //Sort image files in ascending order: 'asc' or decending order: 'desc'
     $bigPicCaption = 'name'; // either 'name', 'file', 'number' or 'none', Sets caption above big image.
     $thumbPicCaption = 'name'; // either 'name', 'file', 'number' or 'none', Sets caption below thumbnails
@@ -27,7 +27,7 @@ function smarty_cms_function_Boxifier($params, &$smarty) {
     $thumbPicAltTag = 'name'; // either 'name', 'file', 'number'. Sets alt tag - compulsory
     $thumbPicTitleTag = ''; // either the default or 'name', 'file', 'number' or 'none'. Sets title tag or removes it
 
-    if(isset($params['ulID'])) $ulID = $params['ulID'];
+    if(isset($params['ulClass'])) $ulClass = $params['ulClass'];
     if(isset($params['picFolder'])) $picFolder = $params['picFolder'];
     if(isset($params['sortBy'])) $sortBy = $params['sortBy'];
     if(isset($params['sortByOrder'])) $sortByOrder = $params['sortByOrder'];
@@ -79,7 +79,7 @@ function smarty_cms_function_Boxifier($params, &$smarty) {
 
      
     // thumb generation
-    $output .= '<ul id="'.$ulID.'">'. "\n";
+    $output .= '<ul class="'.$ulClass.'">'. "\n";
     $i = 1;
     foreach($list as $key => $value) {
         $bigPic = $picFolder . $value;
@@ -117,13 +117,13 @@ function smarty_cms_help_function_Boxifier() {
     </p>
     <h2>Options</h2>
     <ul>
-        <li><strong>gTitle</strong>: sets the Title of the Gallery</li> 
-        <li><strong>ulID</strong>: sets the html ID for the UL Element</li> 
+        <li><strong>gTitle</strong>: sets the Title of the Gallery [default=Gallery]</li> 
+        <li><strong>ulClass</strong>: sets the html class for the UL element [Default=picturelist]</li> 
         <li><strong>picFolder</strong>: sets the path to the image folder</li>
-        <li><strong>sortBy</strong>: use sortby="name" to sort alphabetically</li>
+        <li><strong>sortBy</strong>: use sortby="name" to sort alphabetically or "date" to sort by last modified date [Default=name]</li>
         <li><strong>sortByOrder</strong>: use <strong>asc</strong> to sort ascending
             or <strong>desc</strong> to sort descending. (only makes sense in 
-            combination with the parameter <i>sortBy</i>)</li>
+            combination with the parameter <i>sortBy</i>) [Default=asc]</li>
     </ul>
 EOF;
 }
