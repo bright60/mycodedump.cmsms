@@ -74,6 +74,12 @@ chmod 0777 ./tmp/templates_c
 chmod 0777 ./modules
 chmod 0777 ./uploads
 chmod 0777 ./uploads/images
+
+# Custom directories for files and templates
+mkdir ./uploads/files
+chmod 0777 ./uploads/files
+mkdir ./uploads/tpl
+
 echo "done."
 
 read -p "
